@@ -3,985 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sodda Test Dasturi</title>
+    <title>Duolingo Matching Test Clone</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
             background-color: white;
-            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
         }
         h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .test-area {
-            margin-bottom: 30px;
-        }
-        .progress-bar {
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        .progress {
-            height: 100%;
-            background-color: #58cc02;
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        .question {
-            margin-bottom: 30px;
-        }
-        .question-text {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .items-block {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .items-block h3 {
-            margin-top: 0;
-            color: #2c3e50;
-            font-size: 16px;
-        }
-        .items-list {
-            list-style-type: none;
-            padding: 0;
+            color: #58cc02;
             margin: 0;
         }
-        .items-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .items-list li:last-child {
-            border-bottom: none;
-        }
-        .answer-input {
-            margin-top: 20px;
-        }
-        .answer-input label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .answer-input input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        .answer-input input:focus {
-            outline: none;
-            border-color: #84d8ff;
-        }
-        .answer-hint {
-            font-size: 14px;
-            color: #888;
-            margin-top: 5px;
-        }
-        .btn-container {
+        .game-area {
             display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .btn {
-            padding: 12px 24px;
-            background-color: #58cc02;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: all 0.3s;
-            width: 200px;
-            text-align: center;
-            box-shadow: 0 4px 0 #46a302;
-        }
-        .btn:hover {
-            background-color: #61dd00;
-            transform: translateY(-2px);
-        }
-        .btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #46a302;
-        }
-        .btn:disabled {
-            background-color: #e5e5e5;
-            color: #888;
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            display: none;
-        }
-        .feedback.correct {
-            background-color: #e5f8d3;
-            border: 2px solid #58cc02;
-            color: #3a9104;
-        }
-        .feedback.incorrect {
-            background-color: #ffd5d5;
-            border: 2px solid #ff4b4b;
-            color: #d33030;
-        }
-        .feedback-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 18px;
-        }
-        .correct-answer {
-            margin-top: 10px;
-        }
-        .results {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            display: none;
-        }
-        .result-item {
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .result-item.correct {
-            background-color: #e5f8d3;
-            border: 1px solid #58cc02;
-        }
-        .result-item.incorrect {
-            background-color: #ffd5d5;
-            border: 1px solid #ff4b4b;
-        }
-        .total-score {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #2c3e50;
-            text-align: center;
-        }
-        .btn-restart {
-            background-color: #ff9600;
-            box-shadow: 0 4px 0 #e58800;
-        }
-        .btn-restart:hover {
-            background-color: #ffaa22;
-        }
-        .btn-restart:active {
-            box-shadow: 0 2px 0 #e58800;
-        }
-        .test-selection {
-            display: flex;
-            justify-content: center;
+            gap: 20px;
             margin-bottom: 20px;
+        }
+        .questions-column, .answers-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
         }
-        .test-btn {
-            padding: 10px 15px;
-            background-color: #f0f0f0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+        .card {
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #fff;
+            border: 2px solid #e5e5e5;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            user-select: none;
         }
-        .test-btn.active {
-            background-color: #ddf4ff;
-            border-color: #84d8ff;
+        .card.selected {
+            border-color: #58cc02;
+            box-shadow: 0 0 5px rgba(88, 204, 2, 0.5);
+        }
+        .card.matched {
+            background-color: #d7ffb8;
+            border-color: #58cc02;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .check-btn {
+            background-color: #58cc02;
+            color: white;
+        }
+        .check-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .reset-btn {
+            background-color: #ff4b4b;
+            color: white;
+        }
+        .new-game-btn {
+            background-color: #1cb0f6;
+            color: white;
+        }
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .line {
+            display: none;
+            position: absolute;
+            background-color: #58cc02;
+            height: 2px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .message {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+            height: 24px;
+        }
+        .success {
+            color: #58cc02;
+        }
+        .error {
+            color: #ff4b4b;
+        }
+        .settings {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .settings label {
+            margin-right: 10px;
+        }
+        .settings select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Matching Test</h1>
+    </header>
+    
     <div class="container">
-        <h1>Sodda Test Dasturi</h1>
-        
-        <div class="test-selection">
-            <button class="test-btn active" data-test-id="1">IT Test</button>
-            <button class="test-btn" data-test-id="2">Ingliz Tili</button>
+        <div class="game-area">
+            <div class="questions-column" id="questions"></div>
+            <div class="answers-column" id="answers"></div>
         </div>
         
-        <div class="test-area">
-            <div class="progress-bar">
-                <div class="progress"></div>
-            </div>
-            
-            <div class="question">
-                <div class="question-text">Shu so'zlarni o'ziga mos atamalar bilan birlashtiring</div>
-                
-                <div class="items-block">
-                    <h3>So'zlar:</h3>
-                    <ul class="items-list questions-list">
-                        <!-- Questions will be added here -->
-                    </ul>
-                </div>
-                
-                <div class="items-block">
-                    <h3>Atamalar:</h3>
-                    <ul class="items-list answers-list">
-                        <!-- Answers will be added here -->
-                    </ul>
-                </div>
-                
-                <div class="answer-input">
-                    <label for="user-answer">Javobingiz (faqat javoblar harflarini yozing, masalan: a b):</label>
-                    <input type="text" id="user-answer" placeholder="a b">
-                    <div class="answer-hint">* Faqat javoblar harflarini bo'sh joy bilan ajratib yozing (masalan: a b)</div>
-                </div>
-                
-                <div class="feedback">
-                    <div class="feedback-title"></div>
-                    <div class="feedback-text"></div>
-                    <div class="correct-answer"></div>
-                </div>
-            </div>
-            
-            <div class="btn-container">
-                <button class="btn btn-check">Tekshirish</button>
-            </div>
+        <div class="message" id="message"></div>
+        
+        <div class="controls">
+            <button class="check-btn" id="checkBtn" disabled>Tekshirish</button>
+            <button class="reset-btn" id="resetBtn">Qayta o'rnatish</button>
+            <button class="new-game-btn" id="newGameBtn">Keyingi savol</button>
         </div>
         
-        <div class="results">
-            <h2>Natijalar</h2>
-            <div class="results-list"></div>
-            <div class="total-score"></div>
-            <div class="btn-container">
-                <button class="btn btn-restart">Qayta boshlash</button>
-            </div>
-        </div>
+        <div class="score" id="score">Ball: 0</div>
+    </div>
+
+    <div class="settings">
+        <label for="language">Til:</label>
+        <select id="language">
+            <option value="english">Ingliz tili</option>
+            <option value="russian">Rus tili</option>
+            <option value="turkish">Turk tili</option>
+        </select>
     </div>
 
     <script>
-        // Ma'lumotlarni saqlash uchun local storage bilan ishlaydigan funksiyalar
-        const storage = {
-            saveData: (key, data) => {
-                localStorage.setItem(key, JSON.stringify(data));
-            },
-            getData: (key) => {
-                const data = localStorage.getItem(key);
-                return data ? JSON.parse(data) : null;
-            },
-            removeData: (key) => {
-                localStorage.removeItem(key);
-            }
+        // O'yin ma'lumotlari
+        const gameData = {
+            english: [
+                // 1-to'plam
+                [
+                    { question: "What is your name?", answer: "Ismingiz nima?" },
+                    { question: "How are you?", answer: "Qalaysiz?" },
+                    { question: "Where do you live?", answer: "Qayerda yashaysiz?" },
+                    { question: "I am a student", answer: "Men talabaman" },
+                    { question: "Nice to meet you", answer: "Tanishganimdan xursandman" }
+                ],
+                // 2-to'plam
+                [
+                    { question: "Good morning", answer: "Xayrli tong" },
+                    { question: "Good evening", answer: "Xayrli kech" },
+                    { question: "Thank you very much", answer: "Katta rahmat" },
+                    { question: "How old are you?", answer: "Yoshingiz nechada?" },
+                    { question: "I like this book", answer: "Menga bu kitob yoqadi" }
+                ],
+                // 3-to'plam
+                [
+                    { question: "What time is it?", answer: "Soat nechi bo'ldi?" },
+                    { question: "I am hungry", answer: "Men ochman" },
+                    { question: "Where is the hospital?", answer: "Kasalxona qayerda?" },
+                    { question: "Can you help me?", answer: "Menga yordam bera olasizmi?" },
+                    { question: "I don't understand", answer: "Men tushunmayapman" }
+                ]
+            ],
+            russian: [
+                // 1-to'plam
+                [
+                    { question: "Как вас зовут?", answer: "Ismingiz nima?" },
+                    { question: "Как дела?", answer: "Qalaysiz?" },
+                    { question: "Где вы живёте?", answer: "Qayerda yashaysiz?" },
+                    { question: "Я студент", answer: "Men talabaman" },
+                    { question: "Приятно познакомиться", answer: "Tanishganimdan xursandman" }
+                ],
+                // 2-to'plam
+                [
+                    { question: "Доброе утро", answer: "Xayrli tong" },
+                    { question: "Добрый вечер", answer: "Xayrli kech" },
+                    { question: "Большое спасибо", answer: "Katta rahmat" },
+                    { question: "Сколько вам лет?", answer: "Yoshingiz nechada?" },
+                    { question: "Мне нравится эта книга", answer: "Menga bu kitob yoqadi" }
+                ],
+                // 3-to'plam
+                [
+                    { question: "Который час?", answer: "Soat nechi bo'ldi?" },
+                    { question: "Я голоден", answer: "Men ochman" },
+                    { question: "Где больница?", answer: "Kasalxona qayerda?" },
+                    { question: "Вы можете мне помочь?", answer: "Menga yordam bera olasizmi?" },
+                    { question: "Я не понимаю", answer: "Men tushunmayapman" }
+                ]
+            ],
+            turkish: [
+                // 1-to'plam
+                [
+                    { question: "Adınız ne?", answer: "Ismingiz nima?" },
+                    { question: "Nasılsın?", answer: "Qalaysiz?" },
+                    { question: "Nerede yaşıyorsun?", answer: "Qayerda yashaysiz?" },
+                    { question: "Ben öğrenciyim", answer: "Men talabaman" },
+                    { question: "Tanıştığımıza memnun oldum", answer: "Tanishganimdan xursandman" }
+                ],
+                // 2-to'plam
+                [
+                    { question: "Günaydın", answer: "Xayrli tong" },
+                    { question: "İyi akşamlar", answer: "Xayrli kech" },
+                    { question: "Çok teşekkür ederim", answer: "Katta rahmat" },
+                    { question: "Kaç yaşındasın?", answer: "Yoshingiz nechada?" },
+                    { question: "Bu kitabı seviyorum", answer: "Menga bu kitob yoqadi" }
+                ],
+                // 3-to'plam
+                [
+                    { question: "Saat kaç?", answer: "Soat nechi bo'ldi?" },
+                    { question: "Ben açım", answer: "Men ochman" },
+                    { question: "Hastane nerede?", answer: "Kasalxona qayerda?" },
+                    { question: "Bana yardım edebilir misin?", answer: "Menga yordam bera olasizmi?" },
+                    { question: "Anlamıyorum", answer: "Men tushunmayapman" }
+                ]
+            ]
         };
 
-        // Testlar ma'lumotlari
-        const tests = [
-            {
-                id: 1,
-                name: "1-Qism",
-                questions: [
-                    {
-                        text: "1. (Q-10 ball) Quyidagi rus bosqinchilarining O‘rta Osiyodagi faoliyatlarini bir-biriga moslashtiring.  ",
-                        items: [
-                        { id: "a", text: "a) M.Chernyayev;" },
-                            { id: "b", text: "b) Aleksandr II; " },
-                            { id: "c", text: "c) Kaufman; "},
-                            { id: "d", text: "d) P. Lessar. "}],
-                          
-                        answers: [
-                            { id: "1", text: "1) Rossiya imperiyasining Buxoro amirligidagi birinchi vakili etib tayinlandi;  " },
-                            { id: "2", text: "2) Turkiston general-gubernatori etib tayinlandi. U bir paytning o‘zida Turkiston harbiy okrugining qo‘mondoni ham edi;  " },
-                            { id: "3", text: "3) Toshkent shahrini bosib olishdagi harbiy harakatlarga qo‘mondon etib tayinlani;  " },
-                            { id: "4", text: "4) Qo‘qon xonligini bosib olishni davom ettirish to‘g‘risida ko‘rsatma berdi;  "},
-                            { id: "5", text: "5) 1839-yilda u boshchiligidagi qo‘shinlarning Xiva xonligiga hujumi muvaffaqiyatsiz tugadi. "}
-                        ],
-                        
-                        correctPairs: {
-                            "a": "3",
-                            "b": "4",
-                            "c": "2",
-                            "d": "1"
-                        }
-                    },
-                    {
-                        text: "2. (Q-10 ball)   Quyidagi  O‘rta Osiyoning Rossiya imperiyasi tomonidan bosib olinishi bosqichlaridagi amalga oshirilgan harakatlarni bir-biriga moslashtiring. ",
-                        items: [
-                            { id: "a", text: "a) birinchi bosqich;  " },
-                            { id: "b", text: "b) ikkinchi bosqich; " },
-                            { id: "c", text: "c) uchinchi bosqich;   " },
-                            { id: "d", text: "d) to‘rtinchi bosqich. " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Qo‘qon xonligi va Buxoro amirligiga qarshi istilochilik harakatlari amalga oshirildi;   " },
-                            { id: "2", text: "2) Xiva xonligi yerlarining bir qismi va Qo‘qon xonligining yerlari to‘liq bosib olindi; " },
-                            { id: "3", text: "3) Turkmanlar bo‘ysundiriladi;   "},
-                            { id: "4", text: "4) Qo‘qon xonligining shimoli-g‘arbiy viloyatlari va Toshkent shahri istilo qilindi. Istilo etilgan hududlarda Orenburg generalgubernatorligi tarkibiga kiruvchi Turkiston viloyati tashkil etildi;"},
-                            { id: "5", text: "5) bosib olingan hududlarda mustamlakachilik siyosatining to‘liq amalga oshirilishida boshqaruv tartiblari mustahkamlandi."}
-                        ],
-                        correctPairs: {
-                            "a": "4",
-                            "b": "1",
-                            "c": "2",
-                            "d": "3",
-
-                        }
-                    },
-                    {
-                        text: "3. (Q-10 ball) Aleksandr III imzolagan  “Turkiston o‘lkasini boshqarish haqidagi Nizom” ga ko‘ra belgilangan o‘zgarishlarni moslashtiring.  ",
-                        items: [
-                            { id: "a", text: "a) Zarafshon okrugi; " },
-                            { id: "b", text: "b) Samarqand viloyati;   " },
-                            { id: "c", text: "c) Qurama uyezdi; " },
-                            { id: "d", text: "d) Turkiston general-gubernatorligining ma’muriy boshqaruvi. " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Turkiston general-gubernatori Kengashi bilan to‘ldirildi; " },
-                            { id: "2", text: "2) Samarqand viloyatiga aylantirildi; " },
-                            { id: "3", text: "3) Xo‘jand, Jizzax, Kattaqo‘rg‘on, Samarqand uyezdlari uning tarkibiga kiritildi;   " },
-                            { id: "4", text: "4) Toshkent uyezdi deb o‘zgartirildi;  " },
-                            { id: "5", text: "5) Imperatorining siyosiy agentligi faoliyati yo‘lga qo‘yildi." }
-                        ],
-                        correctPairs: {
-                            "a": "2",
-                            "b": "3",
-                            "c": "4",
-                            "d": "1"   
-                        }
-                    },
-                    {
-                        text: "4. (Q-10 ball)  Sovet hokimiyatiga qarshi qurolli kurash olib borgan qo‘rboshilar faoliyati bilan bog‘liq ma’lumotlarni o‘zaro moslashtiring. ",
-                        items: [
-                            { id: "a", text: "a) Madaminbek;   " },
-                            { id: "b", text: "b) Shermuhammadbek; " },
-                            { id: "c", text: "c) Junaidxon; " },
-                            { id: "d", text: "d) Anvar posho. " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) u boshchiligida Farg‘ona muvaqqat muxtoriyat hukumati tuzildi;  " },
-                            { id: "2", text: "2) uning sa’y-harakatlari bilan Sharqiy Buxoroda birlashgan qismlar tashkil etildi;  " },
-                            { id: "3", text: "3) G‘arbiy Buxoro va Sharqiy Buxoro hududida qo‘rboshilar harakatga rahbarlik qildi; " },
-                            { id: "4", text: "4) Katta Ergash qo‘rboshi mag‘lubiyatga uchragach, u asosiy kuchlarini olib, Oloy vohasiga chekindi;  " },
-                            { id: "5", text: "5) 1918-yil o‘rtalaridan e’tiboran qizil askarlarga qarshi mustaqillik uchun jangga kirdi" }
-                        ],
-                        correctPairs: {
-                            "a": "1",
-                            "b": "4",
-                            "c": "5",
-                            "d": "2"   
-                        }
-                    },
-                    {
-                        text: "5. (Q-10 ball)  Quyida berilgan chor Rossiyasi istilochilariga qarshi  kurash olib borgan shaxslar haqidagi ma’lumotlarni moslashtiring. ",
-                        items: [
-                            { id: "a", text: "a) Bobobek;" },
-                            { id: "b", text: "b) Aliquli;" },
-                            { id: "c", text: "c) Yoqub Bek;" },
-                            { id: "d", text: "d) Jo‘rabek." }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Oqmachit qal’asi qo‘mondoni; " },
-                            { id: "2", text: "2) Turkiston va Chimkent mudofaasi uchun Qo‘qon xonining amir lashkari;  " },
-                            { id: "3", text: "3) Rossiya imperiyasining harbiy yurishlariga qarshi kurash olib borgan Kitob begi;" },
-                            { id: "4", text: "4) Rossiya imperiyasining harbiy yurishlariga qarshi kurash olib borgan Buxoro amirining qo‘mondoni; " },
-                            { id: "5", text: "5)  Rossiya imperiyasining harbiy yurishlariga qarshi  Samarqandda kurash olib borgan Shahrisabz begi. " }
-                        ],
-                        correctPairs: {
-                            "a": "5",
-                            "b": "2",
-                            "c": "1",
-                            "d": "3"   
-                        }
-                    },
-                    {
-                        text: "6. (Q-10 ball)  Rossiya imperiyasi tomonidan Buxoro amirligi  hududida olib borilgan harbiy harakatlarning natijalarini moslashtiring. ",
-                        items: [
-                            { id: "a", text: "a) Jizzax shahridagi harbiy harakatlar;   " },
-                            { id: "b", text: "b) Yerjar qishlog‘idagi harbiy harakatlar;" },
-                            { id: "c", text: "c)  Xo‘jand shahridagi harbiy harakatlar;  " },
-                            { id: "d", text: "d) Zirabuloq qishlog‘idagi harbiy harakatlar. " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Kuchlar harbiy jihatdan teng bo‘lmaganligi uchun amir qo‘shinlari mag‘lubiyatga uchradi;  " },
-                            { id: "2", text: "2) Jangdan keyin amir Muzaffar Kaufmanning Turkiston generalgubernatorligi yangi chegaralari haqidagi taklifini qabul qilishga majbur bo‘ldi;   " },
-                            { id: "3", text: "3) Jangdan so‘ng Yangi Qo‘qon chizig‘i asosida qo‘lga kiritilgan qal’alar birlashtirildi;   " },
-                            { id: "4", text: "4) Istilochilar himoyachilarning mudofaasini yorib o‘tib, shaharni egallashdi; " },
-                            { id: "5", text: "5) Bu jangda har ikkala tomondan 6 mingdan ko‘proq kishi halok bo‘ldi " }
-                        ],
-                        correctPairs: {
-                            "a": "5",
-                            "b": "1",
-                            "c": "4",
-                            "d": "2"   
-                        }
-                    },
-                    {
-                        text: "7. (Q-10 ball)   Quyidagi shaxslarni ularga oid ma’lumotlar asosida moslashtiring.",
-                        items: [
-                            { id: "a", text: "a) V. Perovskiy;" },
-                            { id: "b", text: "b) M. Chernyayev;" },
-                            { id: "c", text: "c) Korolkov;" },
-                            { id: "d", text: "d) A. Bekovich Cherkaskiy." }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) 1839- yilda  Xiva xonligiga hujumi muvaffaqiyatsizlikka uchragan rus sarkardasi; " },
-                            { id: "2", text: "2) Turkiston viloyati gubernatori;   " },
-                            { id: "3", text: "3) 1717- Xiva xonligiga hujumi muvaffaqiyatsizlikka uchragan rus sarkardasi; " },
-                            { id: "4", text: "4) Turkiston general-gubernatorligining birinchi rahbari;  " },
-                            { id: "5", text: "5) Dukchi eshon qo‘zg‘olonini batamom yo‘q qilishga qaratilgan jazo ekspeditsiyasi rahbari.  " }
-                        ],
-                        correctPairs: {
-                            "a": "1",
-                            "b": "2",
-                            "c": "5",
-                            "d": "3"   
-                        }
-                    },
-                    {
-                        text: "8. (Q-10 ball)   Quyidagi shaxslarni ularga oid faoliyatlari  asosida moslashtiring.  ",
-                        items: [
-                            { id: "a", text: "a) Aleksandr III; " },
-                            { id: "b", text: "b) N. Krijanovskiy;" },
-                            { id: "c", text: "c) M. Murkroft;" },
-                            { id: "d", text: "d) A. Middendorf." }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Buxoro amiri tomonidan qatl qilindi;   " },
-                            { id: "2", text: "2) Musulmon aholisining ommaviy savodxonligini xalq ta’limi bo‘yicha Rossiya hukumatiga namuna sifatida ko‘rsatdi;    " },
-                            { id: "3", text: "3) Mintaqaviy aloqalarni yo‘lga qo‘yish uchun Buxoro amirligiga yuborildi;   " },
-                            { id: "4", text: "4) Turkiston viloyati gubernatori lavozimida faoliyat yuritdi;  " },
-                            { id: "5", text: "5) Uning imperatorligi davrida Qurama uyezdining nomi Toshkent uyezdi deb o‘zgartirildi; " },
-                            { id: "6", text:"6) Turkiston harbiy okrugi boshlig‘i lavozimida ishladi."}
-                        ],
-                        correctPairs: {
-                            "a": "5",
-                            "b": "4",
-                            "c": "3",
-                            "d": "2"   
-                        }
-                    },
-                    {
-                        text: "9. (Q-10 ball)   Quyidagi qo‘zg‘alonlarni ularga oid ma’lumotlar asosida moslashtiring. ",
-                        items: [
-                            { id: "a", text: "a) Yetimxon qo‘zg‘oloni; " },
-                            { id: "b", text: "b) Darvishxon qo‘zg‘oloni; " },
-                            { id: "c", text: "c) Jizzax qo‘zg‘oloni;   " },
-                            { id: "d", text: "d) Dukchi eshon qo‘zg‘oloni.  " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Mardikorlikka qarshi ommaviy qo‘zg‘olon ko‘tarildi;  " },
-                            { id: "2", text: "2) qo‘zg‘olonchilar ikkiga bo‘linib, ularning biriga Ziyovuddin maxsum boshchilik qildi;    " },
-                            { id: "3", text: "3) Qo‘zg‘olondan so‘ng o‘lkada mirshablik holati joriy etildi;  " },
-                            { id: "4", text: "4) Mingtepada mustamlakachilarning siyosiy va iqtisodiy zulmiga qarshi ko‘tarildi;   " },
-                            { id: "5", text: "5) qo‘zg‘olonchilar boylar va volost boshliqlarining qarorgohlariga hujum uyushtirdilar;  " },
-                            { id: "6", text: "6) qo‘zg‘olonchilar Putinsev odamlarini tor-mor etib, o‘zini esa kaltaklashdi.  " }
-                        ],
-                        correctPairs: {
-                            "a": "4",
-                            "b": "5",
-                            "c": "1",
-                            "d": "2"   
-                        }
-                    },
-                    {
-                        text: "10. (Q-10 ball)  Quyidagi shartnomalarni ularga oid ma’lumotlar asosida moslashtiring.  ",
-                        items: [
-                            { id: "a", text: "a) Qo‘qonda Rus-Osiyo banki binosida imzolangan «tinchlik shartnomasi»; " },
-                            { id: "b", text: "b) «Zirabuloq shartnomasi»;" },
-                            { id: "c", text: "c) Gandimiyon shartnomasi;  " },
-                            { id: "d", text: "d) Eron shohi bilan Rossiya elchisi imzolagan maxfiy shartnoma. " }
-                        ],
-                        answers: [
-                            { id: "1", text: "1) Toshkentdan Samarqandgacha bo‘lgan barcha bosib olingan hudud Rossiya imperiyasi ixtiyoriga o‘tdi;     " },
-                            { id: "2", text: "2) Buxoro amirligi va Eron o‘rtasidagi chegara belgilandi;   " },
-                            { id: "3", text: "3) Turkiston aholisi o‘lka Xalq Komissarlari Soveti hokimiyati va barcha mahalliy sovet tashkilotlarini tan oldi;  " },
-                            { id: "4", text: "4) Qo‘qon xoni tashqi siyosatda hech qanday bitimlar tuza olmasligi shart qilib qo‘yildi;  " },
-                            { id: "5", text: "5) Xiva xonligining Rossiya imperiyasiga tobeligini, xonning davlat boshlig‘i darajasida boshqa davlatga bo‘ysunganligini ko‘rsatuvchi hujjat bo‘ldi;   " },
-                            { id: "6", text: "6) Rossiya va Eron Kavkazda rus harbiy bazasini tashkil etish masalasini muhokama qildi.  "}
-                        ],
-                        correctPairs: {
-                            "a": "3",
-                            "b": "1",
-                            "c": "5",
-                            "d": "2"   
-                        }
-                    },
-                    {
-                        text: "",
-                        items: [
-                            { id: "a", text: "" },
-                            { id: "b", text: "" },
-                            { id: "c", text: "" },
-                            { id: "d", text: "" }
-                        ],
-                        answers: [
-                            { id: "1", text: " " },
-                            { id: "2", text: "  " },
-                            { id: "3", text: "" },
-                            { id: "4", text: " " },
-                            { id: "5", text: " " }
-                        ],
-                        correctPairs: {
-                            "a": "",
-                            "b": "",
-                            "c": "",
-                            "d": ""   
-                        }
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: "2-Qism",
-                questions: [
-                {
-                    text: "",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                },
-                {
-                    text: "",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                },
-                {
-                    text: " ",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                },
-                {
-                    text: "",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                },
-                {
-                    text: "",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                },
-                {
-                    text: "",
-                    items: [
-                        { id: "1", text: "" },
-                        { id: "2", text: "" },
-                        { id: "3", text: "" },
-                        { id: "4", text: "" },
-                        { id: "5", text: "" },
-                        { id: "6", text: "" }
-
-                    ],
-                    answers: [
-                        { id: "a", text: " " },
-                        { id: "b", text: "  " },
-                        { id: "c", text: "" },
-                        { id: "d", text: " " }
-                       
-                    ],
-                    correctPairs: {
-                        "a": "",
-                        "b": "",
-                        "c": "",
-                        "d": ""   
-                    }
-                }
-                ]
-            }
-        ];
-
-        // Asosiy o'zgaruvchilar
-        let currentTestId = 1;
-        let currentQuestionIndex = 0;
-        let userAnswers = [];
-        let currentTest = tests.find(test => test.id === currentTestId);
-
         // DOM elementlarini olish
-        const testBtns = document.querySelectorAll('.test-btn');
-        const questionTextElement = document.querySelector('.question-text');
-        const questionsListElement = document.querySelector('.questions-list');
-        const answersListElement = document.querySelector('.answers-list');
-        const userAnswerInput = document.getElementById('user-answer');
-        const checkBtn = document.querySelector('.btn-check');
-        const feedbackElement = document.querySelector('.feedback');
-        const feedbackTitleElement = document.querySelector('.feedback-title');
-        const feedbackTextElement = document.querySelector('.feedback-text');
-        const correctAnswerElement = document.querySelector('.correct-answer');
-        const progressElement = document.querySelector('.progress');
-        const resultsElement = document.querySelector('.results');
-        const resultsListElement = document.querySelector('.results-list');
-        const totalScoreElement = document.querySelector('.total-score');
-        const restartBtn = document.querySelector('.btn-restart');
-        const testArea = document.querySelector('.test-area');
+        const questionsColumn = document.getElementById('questions');
+        const answersColumn = document.getElementById('answers');
+        const checkBtn = document.getElementById('checkBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const newGameBtn = document.getElementById('newGameBtn');
+        const scoreElement = document.getElementById('score');
+        const messageElement = document.getElementById('message');
+        const languageSelect = document.getElementById('language');
 
-        // Test tanlash
-        testBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const testId = parseInt(btn.dataset.testId);
-                
-                // Local Storage'dan oldingi testning natijalarini olish
-                const savedTest = storage.getData(`test_${currentTestId}`);
-                
-                // Yangi testni tanlash
-                currentTestId = testId;
-                currentTest = tests.find(test => test.id === testId);
-                
-                // Button'larni yangilash
-                testBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                // Agar saqlangan natijalar bo'lsa, o'shani ko'rsatish
-                if (savedTest && savedTest.completed) {
-                    showResults(savedTest.userAnswers);
-                } else {
-                    // Yangi testni boshlash
-                    restartTest();
-                }
+        // O'zgaruvchilar
+        let score = 0;
+        let selectedQuestion = null;
+        let selectedAnswer = null;
+        let matchedPairs = 0;
+        let currentData = [];
+        let shuffledAnswers = [];
+        let currentLevel = 0; // Joriy savol to'plami indeksi
+
+        // O'yinni boshlash
+        function startGame() {
+            // O'yin ma'lumotlarini tanlangan tilga qarab olish
+            const selectedLanguage = languageSelect.value;
+            const allLevels = gameData[selectedLanguage];
+            
+            // To'g'ri savol to'plamini tanlash
+            currentData = [...allLevels[currentLevel]];
+            matchedPairs = 0;
+            
+            // Header ni yangilash - qaysi savol to'plami ekani ko'rsatiladi
+            document.querySelector('h1').textContent = `Matching Test - To'plam ${currentLevel + 1}/${allLevels.length}`;
+            
+            // Javoblarni aralashtirish
+            shuffledAnswers = [...currentData].sort(() => Math.random() - 0.5);
+            
+            // O'yin maydonini tiklash
+            questionsColumn.innerHTML = '';
+            answersColumn.innerHTML = '';
+            
+            // Savollarni joylashtirish
+            currentData.forEach((item, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'card question';
+                questionCard.textContent = item.question;
+                questionCard.dataset.index = index;
+                questionCard.addEventListener('click', selectQuestion);
+                questionsColumn.appendChild(questionCard);
             });
+            
+            // Javoblarni joylashtirish
+            shuffledAnswers.forEach((item, index) => {
+                const answerCard = document.createElement('div');
+                answerCard.className = 'card answer';
+                answerCard.textContent = item.answer;
+                answerCard.dataset.index = index;
+                answerCard.addEventListener('click', selectAnswer);
+                answersColumn.appendChild(answerCard);
+            });
+            
+            // Tanlashni tozalash
+            selectedQuestion = null;
+            selectedAnswer = null;
+            checkBtn.disabled = true;
+            
+            // Xabarni tozalash
+            messageElement.textContent = '';
+            messageElement.className = 'message';
+        }
+
+        // Savolni tanlash
+        function selectQuestion() {
+            // Agar bu savol allaqachon juftlashtirilgan bo'lsa
+            if (this.classList.contains('matched')) {
+                return;
+            }
+            
+            // Oldingi tanlangan savolni bekor qilish
+            if (selectedQuestion) {
+                selectedQuestion.classList.remove('selected');
+            }
+            
+            // Yangi savolni tanlash
+            this.classList.add('selected');
+            selectedQuestion = this;
+            
+            // Tekshirish tugmasini yangilash
+            updateCheckButton();
+        }
+
+        // Javobni tanlash
+        function selectAnswer() {
+            // Agar bu javob allaqachon juftlashtirilgan bo'lsa
+            if (this.classList.contains('matched')) {
+                return;
+            }
+            
+            // Oldingi tanlangan javobni bekor qilish
+            if (selectedAnswer) {
+                selectedAnswer.classList.remove('selected');
+            }
+            
+            // Yangi javobni tanlash
+            this.classList.add('selected');
+            selectedAnswer = this;
+            
+            // Tekshirish tugmasini yangilash
+            updateCheckButton();
+        }
+
+        // Tekshirish tugmasini yangilash
+        function updateCheckButton() {
+            checkBtn.disabled = !(selectedQuestion && selectedAnswer);
+        }
+
+        // Juftlarni tekshirish
+        function checkMatch() {
+            if (!selectedQuestion || !selectedAnswer) {
+                return;
+            }
+            
+            const questionIndex = parseInt(selectedQuestion.dataset.index);
+            const questionItem = currentData[questionIndex];
+            
+            const answerIndex = parseInt(selectedAnswer.dataset.index);
+            const answerItem = shuffledAnswers[answerIndex];
+            
+            // Juftlar to'g'ri kelsa
+            if (questionItem.answer === answerItem.answer) {
+                // Juftlashtirilgan elementlarni belgilash
+                selectedQuestion.classList.add('matched');
+                selectedQuestion.classList.remove('selected');
+                selectedAnswer.classList.add('matched');
+                selectedAnswer.classList.remove('selected');
+                
+                // Juftlashtirilgan juftlar sonini oshirish
+                matchedPairs++;
+                
+                // Ballni oshirish
+                score += 10;
+                scoreElement.textContent = `Ball: ${score}`;
+                
+                // Xabar ko'rsatish
+                messageElement.textContent = "To'g'ri!";
+                messageElement.className = 'message success';
+                
+                // Barcha juftlar topilganligini tekshirish
+                if (matchedPairs === currentData.length) {
+                    messageElement.textContent = "Siz g'alaba qozondingiz! Barcha juftlar topildi!";
+                    // Keyingi tugmasini faollashtirish
+                    newGameBtn.style.backgroundColor = "#58cc02";
+                    newGameBtn.classList.add("pulse");
+                }
+            } else {
+                // Xato juftlashtirishda
+                messageElement.textContent = "Noto'g'ri juftlik!";
+                messageElement.className = 'message error';
+            }
+            
+            // Tanlashni bekor qilish
+            selectedQuestion = null;
+            selectedAnswer = null;
+            checkBtn.disabled = true;
+        }
+
+        // O'yinni qayta o'rnatish
+        function resetGame() {
+            // Barcha tanlash va juftlashtirish belgilarini olib tashlash
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.remove('selected', 'matched');
+            });
+            
+            // Tanlashni tozalash
+            selectedQuestion = null;
+            selectedAnswer = null;
+            matchedPairs = 0;
+            
+            // Tekshirish tugmasini yangilash
+            checkBtn.disabled = true;
+            
+            // Xabarni tozalash
+            messageElement.textContent = '';
+            messageElement.className = 'message';
+        }
+
+        // Tugmalar uchun hodisalar
+        checkBtn.addEventListener('click', checkMatch);
+        resetBtn.addEventListener('click', resetGame);
+        newGameBtn.addEventListener('click', nextLevel);
+        languageSelect.addEventListener('change', function() {
+            currentLevel = 0; // Til o'zgarganda 1-to'plamdan boshlash
+            startGame();
         });
-
-        // Savolni ko'rsatish
-        function showQuestion() {
-            if (currentQuestionIndex >= currentTest.questions.length) {
-                // Test yakunlandi
-                showResults(userAnswers);
-                
-                // Natijalarni local storage'ga saqlash
-                storage.saveData(`test_${currentTestId}`, {
-                    userAnswers: userAnswers,
-                    completed: true
-                });
-                
-                return;
-            }
-
-            const question = currentTest.questions[currentQuestionIndex];
-            questionTextElement.textContent = question.text;
-            
-            // Progressni ko'rsatish
-            const progress = ((currentQuestionIndex) / currentTest.questions.length) * 100;
-            progressElement.style.width = `${progress}%`;
-            
-            // Savollarni ko'rsatish
-            questionsListElement.innerHTML = '';
-            question.items.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item.text;
-                questionsListElement.appendChild(li);
-            });
-            
-            // Javoblarni ko'rsatish
-            answersListElement.innerHTML = '';
-            question.answers.forEach(answer => {
-                const li = document.createElement('li');
-                li.textContent = answer.text;
-                answersListElement.appendChild(li);
-            });
-            
-            // Input va feedbackni tozalash
-            userAnswerInput.value = '';
-            feedbackElement.style.display = 'none';
-        }
-
-        // Javobni tekshirish
-        function checkAnswer() {
-            const userAnswerText = userAnswerInput.value.trim().toLowerCase();
-            
-            if (!userAnswerText) {
-                alert("Iltimos, javobingizni kiriting!");
-                return;
-            }
-            
-            const question = currentTest.questions[currentQuestionIndex];
-            
-            // Foydalanuvchi javobini tahlil qilish
-            const answerLetters = userAnswerText.split(/\s+/);
-            const userPairs = {};
-            
-            // Tartib bilan har bir itemga mos javobni topish
-            question.items.forEach((item, index) => {
-                if (index < answerLetters.length) {
-                    userPairs[item.id] = answerLetters[index];
-                }
-            });
-            
-            // Javoblarni tekshirish
-            const correctPairs = question.correctPairs;
-            let allCorrect = true;
-            const results = {
-                questionIndex: currentQuestionIndex,
-                userPairs: {},
-                correctPairs: correctPairs,
-                isCorrect: true
-            };
-            
-            // Har bir javobni tekshirish
-            for (const itemId in correctPairs) {
-                const userAnswer = userPairs[itemId];
-                const correctAnswer = correctPairs[itemId];
-                
-                results.userPairs[itemId] = {
-                    answer: userAnswer,
-                    isCorrect: userAnswer === correctAnswer
-                };
-                
-                if (userAnswer !== correctAnswer) {
-                    allCorrect = false;
-                    results.isCorrect = false;
-                }
-            };
-            
-            // Feedback ko'rsatish
-            feedbackTitleElement.textContent = allCorrect ? "To'g'ri javob!" : "Noto'g'ri javob!";
-            
-            if (!allCorrect) {
-                // To'g'ri javobni ko'rsatish
-                let correctAnswerText = "To'g'ri javob: ";
-                const correctAnswersArray = [];
-                
-                const orderedItems = question.items.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-                const correctLetters = orderedItems.map(item => correctPairs[item.id]);
-                
-                correctAnswerText += correctLetters.join(' ');
-                correctAnswerElement.textContent = correctAnswerText;
-                correctAnswerElement.style.display = 'block';
-            } else {
-                correctAnswerElement.style.display = 'none';
-            }
-            
-            feedbackElement.className = 'feedback ' + (allCorrect ? 'correct' : 'incorrect');
-            feedbackElement.style.display = 'block';
-            
-            // Foydalanuvchi javobini saqlash
-            userAnswers.push(results);
-            
-            // Button'ni yangilash
-            checkBtn.textContent = "Keyingi savol";
-            checkBtn.removeEventListener('click', checkAnswer);
-            checkBtn.addEventListener('click', nextQuestion);
-        }
-
-        // Keyingi savolga o'tish
-        function nextQuestion() {
-            currentQuestionIndex++;
-            showQuestion();
-            
-            // Button'ni qaytarish
-            checkBtn.textContent = "Tekshirish";
-            checkBtn.removeEventListener('click', nextQuestion);
-            checkBtn.addEventListener('click', checkAnswer);
-        }
-
-        // Natijalarni ko'rsatish
-        function showResults(answers) {
-            testArea.style.display = 'none';
-            resultsElement.style.display = 'block';
-            
-            // Natijalarni ro'yxatini yaratish
-            resultsListElement.innerHTML = '';
-            let correctCount = 0;
-            let totalQuestions = 0;
-            
-            answers.forEach((answer, index) => {
-                const question = currentTest.questions[answer.questionIndex];
-                const resultItem = document.createElement('div');
-                resultItem.classList.add('result-item', answer.isCorrect ? 'correct' : 'incorrect');
-                
-                let resultHTML = `<p><strong>Savol ${index + 1}:</strong> ${question.text}</p>`;
-                resultHTML += '<p><strong>Sizning javobingiz:</strong> ';
-                
-                const orderedItems = question.items.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-                const userAnswersArray = orderedItems.map(item => {
-                    const userPair = answer.userPairs[item.id] || {};
-                    return userPair.answer || '?';
-                });
-                
-                resultHTML += userAnswersArray.join(' ');
-                resultHTML += `</p><p><strong>Natija:</strong> ${answer.isCorrect ? 'To\'g\'ri' : 'Noto\'g\'ri'}</p>`;
-                
-                // To'g'ri/noto'g'ri javoblarni sanash
-                for (const itemId in answer.userPairs) {
-                    const userPair = answer.userPairs[itemId];
-                    if (userPair.isCorrect) {
-                        correctCount++;
-                    }
-                    totalQuestions++;
-                }
-                
-                if (!answer.isCorrect) {
-                    // To'g'ri javobni ko'rsatish
-                    const correctLetters = orderedItems.map(item => answer.correctPairs[item.id]);
-                    resultHTML += `<p><strong>To'g'ri javob:</strong> ${correctLetters.join(' ')}</p>`;
-                }
-                
-                resultItem.innerHTML = resultHTML;
-                resultsListElement.appendChild(resultItem);
-            });
-            
-            // Umumiy natijani ko'rsatish
-            const percentage = Math.round((correctCount / totalQuestions) * 100);
-            
-            totalScoreElement.innerHTML = `
-                <p>To'g'ri javoblar: ${correctCount} / ${totalQuestions} (${percentage}%)</p>
-            `;
-        }
-
-        // Testni qayta boshlash
-        function restartTest() {
-            currentQuestionIndex = 0;
-            userAnswers = [];
-            
-            // Local storage'dan testni o'chirish
-            storage.removeData(`test_${currentTestId}`);
-            
-            testArea.style.display = 'block';
-            resultsElement.style.display = 'none';
-            
-            showQuestion();
-            
-            // Button'ni qaytarish
-            checkBtn.textContent = "Tekshirish";
-            checkBtn.removeEventListener('click', nextQuestion);
-            checkBtn.addEventListener('click', checkAnswer);
-        }
-
-        // Saqlangan testni tekshirish va ko'rsatish
-        function checkSavedTest() {
-            const savedTest = storage.getData(`test_${currentTestId}`);
-            
-            if (savedTest && savedTest.completed) {
-                showResults(savedTest.userAnswers);
-            } else {
-                showQuestion();
-            }
-        }
-
-        // Event listener'larni qo'shish
-        checkBtn.addEventListener('click', checkAnswer);
-        restartBtn.addEventListener('click', restartTest);
         
-        // Klaviatura bilan "Enter" tugmasini bosib tekshirish
-        userAnswerInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                if (checkBtn.textContent === "Tekshirish") {
-                    checkAnswer();
-                } else {
-                    nextQuestion();
-                }
-            }
-        });
+        // Keyingi savol to'plamiga o'tish
+        function nextLevel() {
+            const selectedLanguage = languageSelect.value;
+            const allLevels = gameData[selectedLanguage];
+            
+            // Keyingi savol to'plamiga o'tish
+            currentLevel = (currentLevel + 1) % allLevels.length;
+            
+            // Yangi o'yinni boshlash
+            startGame();
+        }
 
-        // Dasturni ishga tushirish
-        checkSavedTest();
+        // O'yinni boshlash
+        startGame();
     </script>
 </body>
 </html>
